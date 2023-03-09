@@ -68,6 +68,29 @@ class _HomeScrState extends State<HomeScr> {
           child: Column(
             children: [
               TextField(
+                onChanged: (String val) {
+                  setState(() {
+                    if (val.isEmpty) {
+                      items = real;
+                    } else {
+                      List<ItemModel> filtered = items
+                          .where((element) => element.title
+                              .toLowerCase()
+                              .contains(val.toLowerCase()))
+                          .toList();
+
+                      if (filtered.isNotEmpty) {
+                        items = filtered;
+                      } else {
+                        items = items
+                            .where((element) => element.category
+                                .toLowerCase()
+                                .contains(val.toLowerCase()))
+                            .toList();
+                      }
+                    }
+                  });
+                },
                 controller: sController,
                 decoration: InputDecoration(
                   hintText: "Search",
