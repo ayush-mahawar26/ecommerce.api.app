@@ -1,11 +1,12 @@
 import 'package:ecommerce_api/constants/size_config.dart';
-import 'package:ecommerce_api/cubits/desc.page.cubit/desc.page.cubit.dart';
 import 'package:ecommerce_api/models/item.model.dart';
 import 'package:ecommerce_api/views/cart.dart';
 import 'package:ecommerce_api/views/widgets/show.mssg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubit/desc.cubit.dart';
 
 class ItemDescription extends StatelessWidget {
   ItemModel model;
@@ -72,14 +73,14 @@ class ItemDescription extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(10)))),
                               onPressed: () {
-                                descCubit.incrementCounter();
+                                descCubit.increment();
                               },
                               child: const Icon(
                                 Icons.add,
                                 size: 50,
                               )),
                           Text(
-                            descCubit.getCount.toString(),
+                            descCubit.getCounter.toString(),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!
@@ -92,7 +93,7 @@ class ItemDescription extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(10)))),
                               onPressed: () {
-                                descCubit.decrementCounter();
+                                descCubit.decrement();
                               },
                               child: const Icon(
                                 CupertinoIcons.minus,
