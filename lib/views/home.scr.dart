@@ -1,6 +1,11 @@
 import 'package:ecommerce_api/constants/size_config.dart';
+import 'package:ecommerce_api/cubits/getdata/getdata.cubit.dart';
+import 'package:ecommerce_api/cubits/getdata/getdata.state.dart';
 import 'package:ecommerce_api/views/widgets/shop.item.dart';
+import 'package:ecommerce_api/views/widgets/show.mssg.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScr extends StatelessWidget {
   HomeScr({super.key});
@@ -14,6 +19,17 @@ class HomeScr extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Ecommerce"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed('/cart');
+              },
+              child: const Icon(CupertinoIcons.cart_fill),
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -43,7 +59,29 @@ class HomeScr extends StatelessWidget {
                       borderSide:
                           const BorderSide(width: 2, color: Colors.blue))),
             ),
-            ShopItemWidget()
+            Expanded(
+              child: SizedBox(
+                child: BlocBuilder<DataCubit, DataState>(
+                    builder: (context, DataState state) {
+                  if (state is DataLoaded) {
+                    return ListView.builder(
+                      itemCount: state.data.length,
+                      itemBuilder: (context, index) {
+                        return ShopItemWidget(item: state.data[index]);
+                      },
+                    );
+                  } else if (state is DataErrorState) {
+                    return Center(
+                      child: Text(state.error),
+                    );
+                  }
+
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
+              ),
+            )
           ],
         ),
       ),

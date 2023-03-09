@@ -1,10 +1,14 @@
+import 'package:ecommerce_api/models/item.model.dart';
+import 'package:ecommerce_api/services/shop.api.dart';
+import 'package:ecommerce_api/views/item.desc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/size_config.dart';
 
 class ShopItemWidget extends StatelessWidget {
-  const ShopItemWidget({super.key});
+  ItemModel item;
+  ShopItemWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +29,7 @@ class ShopItemWidget extends StatelessWidget {
                 child: Image(
                   width: SizeConfig.swidth,
                   height: SizeConfig.sheight * 0.3,
-                  image: NetworkImage(
-                      "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"),
+                  image: NetworkImage(item.imgUrl),
                   fit: BoxFit.contain,
                 ),
               ),
@@ -42,7 +45,7 @@ class ShopItemWidget extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: SizeConfig.swidth * 0.6,
-                      child: Text("ItemName",
+                      child: Text(item.title,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
@@ -52,31 +55,21 @@ class ShopItemWidget extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      "\u{20B9} 500 /-",
+                      "\u{20B9} ${item.price} /-",
                       style: Theme.of(context).textTheme!.bodySmall!.copyWith(
                           fontWeight: FontWeight.bold, color: Colors.grey[600]),
                     )
                   ],
                 ),
-                ElevatedButton(
-                    onPressed: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            CupertinoIcons.cart_fill_badge_plus,
-                            size: 20,
-                            color: Colors.black,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text("Save",
-                              style: Theme.of(context).textTheme.bodyMedium)
-                        ],
-                      ),
-                    ))
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ItemDescription(model: item)));
+                    },
+                    icon: Icon(CupertinoIcons.forward))
               ],
             ),
           )
